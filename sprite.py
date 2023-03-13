@@ -5,6 +5,7 @@ pygame.font.init()
 
 
 class Tile(pygame.sprite.Sprite):
+    #metodo constructor
     def __init__(self, game, x, y, text):
         self.groups = game.all_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)

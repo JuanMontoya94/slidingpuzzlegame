@@ -29,6 +29,7 @@ class Game:
         with open("high_score.txt", "w") as file:
             file.write(str("%.3f\n" % self.high_score))
 
+    #metodo que permite crear el juego
     def create_game(self):
         grid = [[x + y * GAME_SIZE for x in range(1, GAME_SIZE + 1)] for y in range(GAME_SIZE)]
         grid[-1][-1] = 0
@@ -75,6 +76,7 @@ class Game:
             self.tiles_grid[row][col], self.tiles_grid[row + 1][col] = self.tiles_grid[row + 1][col], \
                                                                        self.tiles_grid[row][col]
 
+    #función que permite dibujar los mosaicos
     def draw_tiles(self):
         self.tiles = []
         for row, x in enumerate(self.tiles_grid):
@@ -134,12 +136,13 @@ class Game:
 
         self.all_sprites.update()
 
+    #función que permite dibujar la cuadricula
     def draw_grid(self):
         for row in range(-1, GAME_SIZE * TILESIZE, TILESIZE):
             pygame.draw.line(self.screen, BROWN, (row, 0), (row, GAME_SIZE * TILESIZE))
         for col in range(-1, GAME_SIZE * TILESIZE, TILESIZE):
             pygame.draw.line(self.screen, BROWN, (0, col), (GAME_SIZE * TILESIZE, col))
-    #funcion que permite dibujar
+    #funcion que permite dibujar los mosaicos, la cuadricula y la ventana
     def draw(self):
         self.screen.fill(BGCOLOUR)
         self.all_sprites.draw(self.screen)
