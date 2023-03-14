@@ -18,7 +18,9 @@ class Game:
         self.start_game = False
         self.start_timer = False
         self.elapsed_time = 0
+        self.count_moves = 0
         self.high_score = float(self.get_high_scores()[0])
+        self.moves = int(self.get_moves()[0])
 
     def get_high_scores(self):
         with open("high_score.txt", "r") as file:
@@ -28,6 +30,15 @@ class Game:
     def save_score(self):
         with open("high_score.txt", "w") as file:
             file.write(str("%.3f\n" % self.high_score))
+
+    def get_moves(self):
+        with open("moves.txt", "r") as file:
+            scores = file.read().splitlines()
+        return scores
+
+    def save_moves(self):
+        with open("moves.txt", "w") as file:
+            file.write(str("%.0f\n" % self.count_moves))
 
     #metodo que permite crear el juego
     def create_game(self):
@@ -118,7 +129,10 @@ class Game:
                     self.high_score = self.elapsed_time if self.elapsed_time < self.high_score else self.high_score
                 else:
                     self.high_score = self.elapsed_time
+                    self.moves = self.count_moves
                 self.save_score()
+                self.save_moves()
+                self.moves = self.count_moves
 
             if self.start_timer:
                 self.timer = time.time()
@@ -150,7 +164,9 @@ class Game:
         for button in self.buttons_list:
             button.draw(self.screen)
         UIElement(750, 35, "%.3f" % self.elapsed_time).draw(self.screen)
-        UIElement(630, 300, "High Score - %.3f" % (self.high_score if self.high_score > 0 else 0)).draw(self.screen)
+        UIElement(630, 280, "High Score - %.3f" % (self.high_score if self.high_score > 0 else 0)).draw(self.screen)
+        UIElement(710, 320, "Moves - %.0f" % (self.moves if self.moves > 0 else 0)).draw(self.screen)
+        UIElement(625, 370, "your moves - %.0f" % (self.count_moves if self.count_moves > 0 else 0)).draw(self.screen)
         pygame.display.flip()
 
     """ funcion que permite capturar los eventos dentro del juego como movimientos y
@@ -169,15 +185,19 @@ class Game:
                         if tile.click(mouse_x, mouse_y):
                             if tile.right() and self.tiles_grid[row][col + 1] == 0:
                                 self.tiles_grid[row][col], self.tiles_grid[row][col + 1] = self.tiles_grid[row][col + 1], self.tiles_grid[row][col]
+                                self.count_moves += 1
 
                             if tile.left() and self.tiles_grid[row][col - 1] == 0:
                                 self.tiles_grid[row][col], self.tiles_grid[row][col - 1] = self.tiles_grid[row][col - 1], self.tiles_grid[row][col]
+                                self.count_moves += 1
 
                             if tile.up() and self.tiles_grid[row - 1][col] == 0:
                                 self.tiles_grid[row][col], self.tiles_grid[row - 1][col] = self.tiles_grid[row - 1][col], self.tiles_grid[row][col]
+                                self.count_moves += 1
 
                             if tile.down() and self.tiles_grid[row + 1][col] == 0:
                                 self.tiles_grid[row][col], self.tiles_grid[row + 1][col] = self.tiles_grid[row + 1][col], self.tiles_grid[row][col]
+                                self.count_moves += 1
 
                             self.draw_tiles()
 
@@ -186,6 +206,7 @@ class Game:
                         if button.text == "Nuevo Juego":
                             self.shuffle_time = 0
                             self.start_shuffle = True
+                            self.count_moves = 0
                         if button.text == "Resolver":
                             self.new()
 

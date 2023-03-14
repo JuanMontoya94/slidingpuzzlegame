@@ -16,4 +16,4 @@ HEIGHT = 650
 FPS = 60
 title = "Juego rompecabezas 4 x 4 - Parcial IA Uniquindio"
 TILESIZE = 128
-GAME_SIZE = 4
+GAME_SIZE = 3

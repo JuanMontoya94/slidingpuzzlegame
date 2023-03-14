@@ -23,7 +23,7 @@ class Tile(pygame.sprite.Sprite):
             draw_y = (TILESIZE / 2) - self.font_size[1] / 2
             self.image.blit(font_surface, (draw_x, draw_y))
         else:
-            self.image.fill(BGCOLOUR)
+            self.image.fill(BROWN)
 
     def update(self):
         self.rect.x = self.x * TILESIZE
@@ -32,15 +32,19 @@ class Tile(pygame.sprite.Sprite):
     def click(self, mouse_x, mouse_y):
         return self.rect.left <= mouse_x <= self.rect.right and self.rect.top <= mouse_y <= self.rect.bottom
 
+    #función que permite validar mosaico a la derecha
     def right(self):
         return self.rect.x + TILESIZE < GAME_SIZE * TILESIZE
 
+    #función que permite validar mosaico a la izquierda
     def left(self):
         return self.rect.x - TILESIZE >= 0
 
+    #función que permite validar mosaico hacia arriba
     def up(self):
         return self.rect.y - TILESIZE >= 0
 
+    #función que permite validar mosaico hacia abajo
     def down(self):
         return self.rect.y + TILESIZE < GAME_SIZE * TILESIZE
 
